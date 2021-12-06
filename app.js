@@ -3,12 +3,16 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const  mongoose = require('mongoose');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const cors = require('cors');
 require('dotenv').config();
+
+
+//imports from folder in app
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/user/userRouter');
 var app = express();
 
+//connecting to backend database
 mongoose.connect(process.env.MONGO_DB,{
   useNewUrlParser:true,
   useUnifiedTopology:true,
@@ -24,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users/anime', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
