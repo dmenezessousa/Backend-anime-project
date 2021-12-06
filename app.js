@@ -4,12 +4,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const  mongoose = require('mongoose');
 const cors = require('cors');
+const userJWTStrategy = require('./routes/lib/passport/userPassport');
 require('dotenv').config();
 
 
 //imports from folder in app
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user/userRouter');
+const passport = require('passport');
 var app = express();
 
 //connecting to backend database
@@ -26,6 +28,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
+app.use(passport.initialize());
+passport.use("jwt-user",userJWTStrategy)
 
 app.use('/', indexRouter);
 app.use('/api/users/anime', usersRouter);
