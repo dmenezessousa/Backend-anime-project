@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../model/User");
-const getErrorMessage = require("../../lib/errorHandler");
+const getErrorMessage = require("../../lib/errorHandler/errorHandler");
 
 
 async function userSignUp (req,res){
@@ -26,7 +26,7 @@ async function userSignUp (req,res){
 };
 
 async function userLogin (req, res){
-    const {email,password}=req,body;
+    const {email,password}=req.body;
     try{
         let foundUser = await User.findOne({email:email});
         if(!foundUser){
