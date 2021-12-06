@@ -1,8 +1,8 @@
-const Anime = require('../model/Anime');
+const Manga = require('../model/Manga');
 const User = require('../../users/model/User');
 const getErrorMessage = require('../../lib/errorHandler/errorHandler');
 
-async function getAllFavoriteAnime(req,res){
+async function getAllFavoriteManga(req,res){
     try{
         const decodedData = res.locals.decodedData;
 
@@ -13,17 +13,17 @@ async function getAllFavoriteAnime(req,res){
         //     );
 
 
-        let allFavoriteAnimes = await Anime.find({user: foundUser._id});
+        let allFavoriteMangas = await Manga.find({user: foundUser._id});
 
-        res.json({message: "Success", payload: allFavoriteAnimes});
+        res.json({message: "Success", payload: allFavoriteMangas});
     }catch(e){
         res.status(500).json(getErrorMessage(e));
     }
     
 };
 
-async function addAnimeToFavorite (req,res){
-    const {title, animePoster,imdbID}= req.body;
+async function addMangaToFavorite (req,res){
+    const {title, mangaPoster,imdbID}= req.body;
 
     try {
             const decodedData = res.locals.decodedData;
@@ -33,32 +33,32 @@ async function addAnimeToFavorite (req,res){
             // let foundUser = await User.findOne({ email: req.body.email }).select(
             //     "-__v"
             //     );
-            const createdAnime = new Anime({
+            const createdManga = new Manga({
                 title,
-                animePoster,
+                mangaPoster,
                 imdbID,
-                animeOwner: foundUser._id,
+                mangaOwner: foundUser._id,
             })
 
-            let savedAnime = await createdAnime.save();
+            let savedManga = await createdManga.save();
 
-            foundUser.animeHistory.push(savedAnime._id);
+            foundUser.mangaHistory.push(savedManga._id);
 
             await foundUser.save();
 
-            return res.json({message: "Success", savedAnime});
+            return res.json({message: "Success", savedManga});
     }catch(e){
         res.status(500).json(getErrorMessage(e));
     }
 }
 
 
-async function deleteFavoriteAnime(req,res){
+async function deleteFavoriteManga(req,res){
     try{
-        let deletedAnime = await Anime.findByIdAndRemove(req.params.id);
+        let deletedManga = await Manga.findByIdAndRemove(req.params.id);
 
-        if(!deletedAnime){
-            return res.status(404).json({message: "Error", error: "Anime not found"});
+        if(!deletedManga){
+            return res.status(404).json({message: "Error", error: "Manga not found"});
         }else{
             const decodedData = res.locals.decodedData;
 
@@ -67,17 +67,17 @@ async function deleteFavoriteAnime(req,res){
         // let foundUser = await User.findOne({ email: req.body.email }).select(
         //     "-__v"
         //     );
-        let userAnime = foundUser.animeHistory;
+        let userManga = foundUser.mangaHistory;
 
-        let userAnimesHistory = userAnime.filter(
+        let userMangasHistory = userManga.filter(
             (item) => item._id.toString() !== req.params.id
         );
 
-        foundUser.animeHistory = userAnimesHistory;
+        foundUser.mangaHistory = userMangasHistory;
 
         await foundUser.save();
 
-        res.json({message: "Deleted", payload: deletedAnime});
+        res.json({message: "Deleted", payload: deletedManga});
         }
 
     }catch(e){
@@ -86,7 +86,7 @@ async function deleteFavoriteAnime(req,res){
 };
 
 module.exports = {
-    getAllFavoriteAnime,
-    addAnimeToFavorite,
-    deleteFavoriteAnime,
+    getAllFavoriteManga,
+    addMangaToFavorite,
+    deleteFavoriteManga,
 };

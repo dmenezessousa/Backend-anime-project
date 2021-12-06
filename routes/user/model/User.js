@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     email: {type: String, unique: true},
     password:{type: String},
     animeHistory:[{type: mongoose.Schema.ObjectId, ref: "anime"}],
+    mangaHistory:[{type: mongoose.Schema.ObjectId, ref: "manga"}],
 },{
     timestamps: true,
 });

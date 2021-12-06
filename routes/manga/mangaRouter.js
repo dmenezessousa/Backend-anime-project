@@ -2,25 +2,25 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getAllFavoriteAnime,
-    addAnimeToFavorite,
-    deleteFavoriteAnime,
+    getAllFavoriteManga,
+    addMangaToFavorite,
+    deleteFavoriteManga,
 } = require('./controller/Controller');
 
 
-router.get("/get-all-anime",
+router.get("/get-all-manga",
     // passport.authenticate("jwt-user",{session:false}),
-    getAllFavoriteAnime,
+    getAllFavoriteManga,
 );
 
-router.post("/add-anime",
+router.post("/add-manga",
 // passport.authenticate("jwt-user",{session:false}),
-    addAnimeToFavorite,
+    addMangaToFavorite,
 );
 
-router.delete("/delete-anime/:id",
+router.delete("/delete-manga/:id",
     // passport.authenticate("jwt-user",{session:false}),
-    deleteFavoriteAnime,
+    deleteFavoriteManga,
 );
 
 
