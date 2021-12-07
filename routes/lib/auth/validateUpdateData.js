@@ -5,7 +5,7 @@ const {
 } = require("validator");
 
 function validateUpdateData(req, res, next) {
-    const { firstName, lastName, username, password, confirmPassword } = req.body;
+    const { firstName, lastName, userName, password, confirmPassword } = req.body;
 
     let errObj = {};
     if (!isAlpha(firstName)) {
@@ -16,8 +16,8 @@ function validateUpdateData(req, res, next) {
     errObj.lastName = "Last Name cannot have special characters or numbers";
     }
 
-    if (!isAlphanumeric(username)) {
-    errObj.username = "Username cannot have special characters";
+    if (!isAlphanumeric(userName)) {
+    errObj.userName = "Username cannot have special characters";
     }
 
     if (!isStrongPassword(password)) {

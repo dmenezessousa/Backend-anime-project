@@ -4,14 +4,9 @@ const getErrorMessage = require('../../lib/errorHandler/errorHandler');
 
 async function getAllFavoriteManga(req,res){
     try{
-        const decodedData = res.locals.decodedData;
-
-        let foundUser = await User.findOne({email: decodedData.email});
-
-        // let foundUser = await User.findOne({ email: req.body.email }).select(
-        //     "-__v"
-        //     );
-
+        let foundUser = await User.findOne({ email: req.body.email }).select(
+            "-__v"
+            );
 
         let allFavoriteMangas = await Manga.find({user: foundUser._id});
 
@@ -23,20 +18,16 @@ async function getAllFavoriteManga(req,res){
 };
 
 async function addMangaToFavorite (req,res){
-    const {title, mangaPoster,imdbID}= req.body;
+    const {title, mangaPoster,mangaID}= req.body;
 
     try {
-            const decodedData = res.locals.decodedData;
-
-            let foundUser = await User.findOne({email: decodedData.email});
-
-            // let foundUser = await User.findOne({ email: req.body.email }).select(
-            //     "-__v"
-            //     );
+            let foundUser = await User.findOne({ email: req.body.email }).select(
+                "-__v"
+                );
             const createdManga = new Manga({
                 title,
                 mangaPoster,
-                imdbID,
+                mangaID,
                 mangaOwner: foundUser._id,
             })
 
@@ -60,13 +51,9 @@ async function deleteFavoriteManga(req,res){
         if(!deletedManga){
             return res.status(404).json({message: "Error", error: "Manga not found"});
         }else{
-            const decodedData = res.locals.decodedData;
-
-            let foundUser = await User.findOne({email: decodedData.email});
-
-        // let foundUser = await User.findOne({ email: req.body.email }).select(
-        //     "-__v"
-        //     );
+        let foundUser = await User.findOne({ email: req.body.email }).select(
+            "-__v"
+            );
         let userManga = foundUser.mangaHistory;
 
         let userMangasHistory = userManga.filter(

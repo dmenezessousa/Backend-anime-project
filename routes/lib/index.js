@@ -5,7 +5,7 @@ const {validateLoginData} = require('./auth/validateLoginData');
 const {validateUpdateData} = require('./auth/validateUpdateData');
 const {userJWTStrategy} = require('./passport/userPassport');
 const {errorHandler} = require('./errorHandler/errorHandler');
-
+const {checkJwt}=require('./common/checkJwt');
 
 module.exports = {
     checkIsEmpty,
@@ -15,4 +15,5 @@ module.exports = {
     validateUpdateData,
     userJWTStrategy,
     errorHandler,
+    checkJwt
 };

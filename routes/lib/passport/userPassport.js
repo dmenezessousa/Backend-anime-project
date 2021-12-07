@@ -1,15 +1,13 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const JwtExtract = require('passport-jwt').ExtractJwt;
 
-const User = require("../../user/model/User");
-const keys = process.env.JWT_SECRET;
+const User = require("../../users/model/User");
+const jwtOptions = {};
 
-const jwtOpts = {};
+jwtOptions.jwtFromRequest = JwtExtract.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = process.env.JWT_SECRET;
 
-jwtOpts.jwtFromRequest = JwtExtract.fromAuthHeaderAsBearerToken();
-jwtOpts.secretOrKey = keys;
-
-const userJWTStrategy = new JwtStrategy(jwtOpts,async(payload,done)=>{
+const jwtStrategyCheck = new JwtStrategy(jwtOptions,async(payload,done)=>{
     const userEmail =  payload.email;
     try{
         if(userEmail){
@@ -29,4 +27,4 @@ const userJWTStrategy = new JwtStrategy(jwtOpts,async(payload,done)=>{
     };
 });
 
-module.exports = userJWTStrategy;
+module.exports = jwtStrategyCheck;

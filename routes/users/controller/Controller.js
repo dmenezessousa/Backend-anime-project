@@ -26,16 +26,18 @@ async function userSignUp (req,res){
 };
 
 async function userLogin (req, res){
-    const {email,password}=req.body;
+    const {password}=req.body;
     try{
-        let foundUser = await User.findOne({email:email});
+        let foundUser = await User.findOne({ email: req.body.email }).select(
+            "-__v"
+        );
         if(!foundUser){
             return res.status(500).json({
                 message:"Login Error user not found",
                 error:"Please Sign Up"
             });
         }else{
-            let matchedPassword = await bcrypt.compare(password,foundUser.passowrd);
+            let matchedPassword = await bcrypt.compare(password,foundUser.password);
             if(!matchedPassword){
                 return res.status(500).json({
                     message: "Login Error",
@@ -46,9 +48,10 @@ async function userLogin (req, res){
                     email: foundUser.email,
                     userName: foundUser.userName,
                 },
-                precess.env.JWT_SECRET,
+                process.env.JWT_SECRET,
                 {expiresIn:"48h"},
                 );
+                console.log(foundUser);
                 res.json({message:"Login Success", payload: jwtToken});
             }
         };
@@ -57,21 +60,22 @@ async function userLogin (req, res){
     };
 };
 
-async function updateUser(req,res){
-    const password = req.body
+async function updateUser(req,res){    
     try{
+        const {password} = req.body;
+
         let salt = await bcrypt.genSalt(10);
         let hashed = await bcrypt.hash(password,salt);
-        req.body.passowrd = hashed;
-
-        let updateUser=await User.findOneAndUpdate(
-            {email:email},
+        req.body.password = hashed;
+        let updateUser = await User.findOneAndUpdate(
+            {email:req.user.email},
             req.body,
             {new:true}
             );
+            
         res.json({
             message: "success",
-            payload: updateUser,
+            payload: updateUser
         });
 
     }catch(e){

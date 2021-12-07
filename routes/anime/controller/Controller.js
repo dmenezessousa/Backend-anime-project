@@ -4,14 +4,9 @@ const getErrorMessage = require('../../lib/errorHandler/errorHandler');
 
 async function getAllFavoriteAnime(req,res){
     try{
-        const decodedData = res.locals.decodedData;
-
-        let foundUser = await User.findOne({email: decodedData.email});
-
-        // let foundUser = await User.findOne({ email: req.body.email }).select(
-        //     "-__v"
-        //     );
-
+        let foundUser = await User.findOne({ email: req.body.email }).select(
+            "-__v"
+            );
 
         let allFavoriteAnimes = await Anime.find({user: foundUser._id});
 
@@ -23,20 +18,16 @@ async function getAllFavoriteAnime(req,res){
 };
 
 async function addAnimeToFavorite (req,res){
-    const {title, animePoster,imdbID}= req.body;
+    const {title, animePoster,animeID}= req.body;
 
     try {
-            const decodedData = res.locals.decodedData;
-
-            let foundUser = await User.findOne({email: decodedData.email});
-
-            // let foundUser = await User.findOne({ email: req.body.email }).select(
-            //     "-__v"
-            //     );
+            let foundUser = await User.findOne({ email: req.body.email }).select(
+                "-__v"
+                );
             const createdAnime = new Anime({
                 title,
                 animePoster,
-                imdbID,
+                animeID,
                 animeOwner: foundUser._id,
             })
 
@@ -60,13 +51,9 @@ async function deleteFavoriteAnime(req,res){
         if(!deletedAnime){
             return res.status(404).json({message: "Error", error: "Anime not found"});
         }else{
-            const decodedData = res.locals.decodedData;
-
-            let foundUser = await User.findOne({email: decodedData.email});
-
-        // let foundUser = await User.findOne({ email: req.body.email }).select(
-        //     "-__v"
-        //     );
+        let foundUser = await User.findOne({ email: req.body.email }).select(
+            "-__v"
+            );
         let userAnime = foundUser.animeHistory;
 
         let userAnimesHistory = userAnime.filter(

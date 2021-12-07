@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const passport = require("passport");
 
 const {
     userSignUp,
@@ -33,13 +33,11 @@ router.post("/login",
 );
 
 router.put("/update-profile",
+    passport.authenticate("jwt-user",{session:false}),
     checkIsEmpty,
     checkIsUndefined,
     validateUpdateData,
     updateUser,
 );
 
-router.delete("/update-profile",
-
-);
 module.exports = router;
