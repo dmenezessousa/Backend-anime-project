@@ -4,10 +4,10 @@ const getErrorMessage = require('../../lib/errorHandler/errorHandler');
 
 async function getAllFavoriteAnime(req,res){
     try{
-        let foundUser = await User.findOne({ email: req.body.email }).select(
+        let foundUser = await User.findOne({ email: req.user.email }).select(
             "-__v"
             );
-
+            console.log(foundUser);
         let allFavoriteAnimes = await Anime.find({user: foundUser._id});
 
         res.json({message: "Success", payload: allFavoriteAnimes});
@@ -21,7 +21,7 @@ async function addAnimeToFavorite (req,res){
     const {title, animePoster,animeID}= req.body;
 
     try {
-            let foundUser = await User.findOne({ email: req.body.email }).select(
+            let foundUser = await User.findOne({ email: req.user.email }).select(
                 "-__v"
                 );
             const createdAnime = new Anime({
@@ -51,7 +51,7 @@ async function deleteFavoriteAnime(req,res){
         if(!deletedAnime){
             return res.status(404).json({message: "Error", error: "Anime not found"});
         }else{
-        let foundUser = await User.findOne({ email: req.body.email }).select(
+        let foundUser = await User.findOne({ email: req.user.email }).select(
             "-__v"
             );
         let userAnime = foundUser.animeHistory;

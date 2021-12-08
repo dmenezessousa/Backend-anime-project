@@ -5,7 +5,7 @@ const {
     getAllFavoriteManga,
     addMangaToFavorite,
     deleteFavoriteManga,
-} = require('./controller/Controller');
+} = require('./controller/mangaController');
 
 router.get("/get-all-manga",
     passport.authenticate("jwt-user",{session:false}),

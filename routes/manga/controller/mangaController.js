@@ -4,7 +4,7 @@ const getErrorMessage = require('../../lib/errorHandler/errorHandler');
 
 async function getAllFavoriteManga(req,res){
     try{
-        let foundUser = await User.findOne({ email: req.body.email }).select(
+        let foundUser = await User.findOne({ email: req.user.email }).select(
             "-__v"
             );
 
@@ -21,7 +21,7 @@ async function addMangaToFavorite (req,res){
     const {title, mangaPoster,mangaID}= req.body;
 
     try {
-            let foundUser = await User.findOne({ email: req.body.email }).select(
+            let foundUser = await User.findOne({ email: req.user.email }).select(
                 "-__v"
                 );
             const createdManga = new Manga({
@@ -51,7 +51,7 @@ async function deleteFavoriteManga(req,res){
         if(!deletedManga){
             return res.status(404).json({message: "Error", error: "Manga not found"});
         }else{
-        let foundUser = await User.findOne({ email: req.body.email }).select(
+        let foundUser = await User.findOne({ email: req.user.email }).select(
             "-__v"
             );
         let userManga = foundUser.mangaHistory;

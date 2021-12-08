@@ -7,4 +7,4 @@ const mangaSchema = new mongoose.Schema({
     mangaOwner:{type: mongoose.Schema.ObjectId, ref: "user"},
 },{timestamps : true,});
 
-module.exports = mongoose.model("anime", mangaSchema);
+module.exports = mongoose.model("manga", mangaSchema);
