@@ -11,6 +11,8 @@ const passport = require('passport');
 //imports from folder in app
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users/userRouter');
+const anime = require('./routes/anime/animeRouter');
+const manga = require('./routes/manga/mangaRouter');
 const jwtStrategyCheck = require('./routes/lib/passport/userPassport');
 var app = express();
 
@@ -34,6 +36,8 @@ passport.use("jwt-user",jwtStrategyCheck);
 
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/users/anime',anime);
+app.use('/api/users/manga',manga);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
